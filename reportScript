@@ -1,0 +1,3080 @@
+    Public pgmN As String
+    Public pgmE As String
+    Public osd As String
+    Public clientN As String
+    Public propN As String
+    Public propA As String
+    Public propCSZ As String
+    Public projN As String
+    Public projM As String
+    Public pgmP As String
+    Public locations() As String
+    Public locid() As Long
+    Public addr() As String
+    Public loc_sf() As Long
+    Public year_blt() As Integer
+    Public year_ren() As Integer
+    Public stories() As Integer
+    Public parking() As Integer
+    Public projectNo As String
+    Public locLevel As Integer
+    Public loc_size As Long
+'option to make instring text comparisons non case-sensitive
+ Option Compare Text
+ Private Declare PtrSafe Function URLDownloadToFile Lib "urlmon" _
+    Alias "URLDownloadToFileA" (ByVal pCaller As Long, ByVal szURL As String, _
+    ByVal szFileName As String, ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
+ 
+
+Sub Automate_text_report_5bldgs()
+
+
+' Automate_text_report_5bldgs Macro
+
+'
+ 'If IsEmpty(Cells(3, 2)) = True Then
+ '   MsgBox "Username is required"
+ '   End
+ 'End If
+ 
+ 
+ 'UserForm1.Show
+ 
+ 'Unload UserForm1
+ automate
+ 
+End Sub
+
+Public Function automate()
+
+ Dim obj_portfolio_master
+ Dim objDoc_portfolio
+ Sheets("Interface").Activate
+ Set obj_portfolio_master = CreateObject("Word.Application")
+ 
+ If Sheets("Interface").OptionButton1.Value = True Then
+ Set objDoc_portfolio = obj_portfolio_master.Documents.Open("C:\Users\nveigas\Desktop\Master text files\017-322-354 FCA mastertext PORTFOLIO 2020-01-01_v20.docx")
+ Else
+ Set objDoc_portfolio = obj_portfolio_master.Documents.Open("C:\Users\nveigas\Desktop\Master text files\017-322-354 FCA mastertext CAMPUS LARGE 2020-08-17.docx")
+ End If
+ 
+ obj_portfolio_master.Visible = True
+   
+    Dim wrdPic As InlineShape
+    Dim coverpic As String
+    
+    Dim UserName As String
+    UserName = Environ("username")
+    
+    file_path = "https://assetcalcprod.file.core.windows.net/files/ClientFiles/DudeSolutionsCityofSandySprings/IMG_9615.thumb.jpg?sv=2017-04-17&ss=f&srt=sco&sp=rwlc&se=2025-08-19T17:16:25Z&st=2017-08-19T09:16:25Z&spr=https&sig=20ukjBF2ZA8o9KnoY%2FRFXIc1J2eVytGidoTW6hAiOmU%3D&637338764540494379"
+    
+    dlpath = "C:\Users\nveigas\Desktop\Master text files\temp.jpg"
+    URLDownloadToFile 0, file_path, dlpath, 0, 0
+    
+    Set wrdPic = obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("cover_pic").Item(1).Range.InlineShapes.AddPicture(Filename:=dlpath, LinkToFile:=False, SaveWithDocument:=True)
+    'http://2030palette.org/wp-content/uploads/2017/08/1908_Novancia_Business_School_1-1200x900.jpg
+    
+    'With myPicture
+    '.Height = 200
+    '.Width = 450
+    'End With
+    
+    'Deletes temp photo after insertion
+    SetAttr dlpath, vbNormal
+    Kill dlpath
+    
+   ' select_data_tab
+    
+    'Dim Lrow As Long
+    'Lrow = L_row
+        
+    'MsgBox Lrow
+    
+    'Dim Firow As Long
+    'Firow = Fi_row
+    'MsgBox Firow
+    
+    
+    clientN = Cells(3, 2)
+    propN = Cells(4, 2)
+    pgmN = Cells(5, 2)
+    osd = Cells(6, 2)
+    propA = Cells(7, 2)
+    propCSZ = Cells(8, 2)
+    projN = Cells(12, 2)
+    projM = Cells(9, 2)
+    pgmE = Cells(10, 2)
+    pgmP = Cells(11, 2)
+    locLevel = Cells(3, 9)
+    'MsgBox "loclevel is " & locLevel
+    
+    
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("clientN").Item(1).Range.text = clientN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("clientN").Item(2).Range.text = clientN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("clientN").Item(3).Range.text = clientN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("cur_occ").Item(1).Range.text = clientN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("propN").Item(1).Range.text = propN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("propN").Item(2).Range.text = propN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("propN").Item(3).Range.text = propN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("propN").Item(4).Range.text = propN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pgmN").Item(1).Range.text = pgmN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pgmN").Item(2).Range.text = pgmN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pgmN").Item(3).Range.text = pgmN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("osd").Item(1).Range.text = osd
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("osd").Item(2).Range.text = osd
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("propA").Item(1).Range.text = propA
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("propA").Item(2).Range.text = propA
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("propCSZ").Item(1).Range.text = propCSZ
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("propCSZ").Item(2).Range.text = propCSZ
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("propCSZ").Item(3).Range.text = propCSZ
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("projNu").Item(1).Range.text = projN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("projNu").Item(2).Range.text = projN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("projNu").Item(3).Range.text = projN
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("projM").Item(1).Range.text = projM
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("projM").Item(2).Range.text = projM
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pgmE").Item(1).Range.text = pgmE
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pgmE").Item(2).Range.text = pgmE
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pgmE").Item(3).Range.text = pgmE
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pgmP").Item(1).Range.text = pgmP
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pgmP").Item(2).Range.text = pgmP
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pgmP").Item(3).Range.text = pgmP
+     
+    Sheets("Locations").Select
+    
+    Dim lookup_locname As Range
+    Set lookup_locname = Range("A1:EA1").Find("name", LookAt:=xlWhole)
+    Dim locname_col As Long
+    locname_col = lookup_locname.Column
+    'MsgBox "location col is:" & locname_col
+    
+    Dim lookup_locsid As Range
+    Set lookup_locsid = Range("A1:EA1").Find("simpleID", LookAt:=xlWhole)
+    Dim locsid_col As Long
+    locsid_col = lookup_locsid.Column
+    
+    Dim lookup_locaddr As Range
+    Set lookup_locaddr = Range("A1:EA1").Find("addressFormatted", LookAt:=xlWhole)
+    Dim locaddr_col As Long
+    locaddr_col = lookup_locaddr.Column
+    
+    Dim lookup_locblt As Range
+    Set lookup_locblt = Range("A1:EA1").Find("yearBuilt", LookAt:=xlWhole)
+    Dim locblt_col As Long
+    locblt_col = lookup_locblt.Column
+    
+    Dim lookup_locsf As Range
+    Set lookup_locsf = Range("A1:EA1").Find("totalSF", LookAt:=xlWhole)
+    Dim locsf_col As Long
+    locsf_col = lookup_locsf.Column
+    
+    Dim lookup_loclev As Range
+    Set lookup_loclev = Range("A1:EA1").Find("locationLevel", LookAt:=xlWhole)
+    Dim loclev_col As Long
+    loclev_col = lookup_loclev.Column
+    
+    Dim lookup_locass As Range
+    Set lookup_locass = Range("A1:EA1").Find("assessmentDate", LookAt:=xlWhole)
+    Dim locass_col As Long
+    locass_col = lookup_locass.Column
+    
+    
+    Columns(locaddr_col).Select
+    Selection.Replace What:="<br />", Replacement:=", ", LookAt:=xlPart, _
+    searchorder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+    ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+    
+    
+    ActiveWorkbook.Worksheets("Locations").AutoFilter.Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("Locations").AutoFilter.Sort.SortFields.Add2 Key:= _
+        Cells(1, loclev_col), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortNormal
+    With ActiveWorkbook.Worksheets("Locations").AutoFilter.Sort
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    ActiveSheet.Range("$A$1:$DN$76").AutoFilter Field:=loclev_col, Criteria1:=locLevel
+    
+    ActiveWorkbook.Worksheets("Locations").AutoFilter.Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("Locations").AutoFilter.Sort.SortFields.Add2 Key:= _
+        Cells(1, locname_col), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortNormal
+    With ActiveWorkbook.Worksheets("Locations").AutoFilter.Sort
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+    loc_firow = Fi_row
+    'MsgBox "First row is " & loc_firow
+    'loc_lrow = Rows(Rows.Count).End(xlUp).Row
+'    loc_lrow = sht.Cells.Find("*", searchorder:=xlByRows, searchdirection:=xlPrevious).Row
+
+    Cells(5000, locname_col).Select
+    Selection.End(xlUp).Select
+    loc_lrow = ActiveCell.Row
+    'MsgBox "last loc row is" & loc_lrow
+    
+    
+    loc_size = loc_lrow - loc_firow + 1
+    'MsgBox "loc size is " & loc_size
+    
+    ReDim locations(1 To loc_size)
+    ReDim locid(1 To loc_size)
+    ReDim addr(1 To loc_size)
+    ReDim loc_sf(1 To loc_size)
+    ReDim year_blt(1 To loc_size)
+    Dim loc_no As Integer
+    loc_no = 0
+    
+    For i = loc_firow To loc_lrow
+            If IsEmpty(Cells(i, locass_col)) = False Then
+                loc_no = loc_no + 1
+                locations(loc_no) = Cells(i, locname_col)
+                locid(loc_no) = Cells(i, locsid_col)
+                addr(loc_no) = Cells(i, locaddr_col)
+                year_blt(loc_no) = Cells(i, locblt_col)
+                loc_sf(loc_no) = Cells(i, locsf_col)
+                
+            
+            End If
+
+    Next i
+    
+    'MsgBox locations(6)
+    'MsgBox locid(3)
+    'MsgBox addr(4)
+    'MsgBox loc_sf(5)
+    'MsgBox "the number of locations is" & loc_no
+   
+    'MsgBox locid(38)
+    'MsgBox clientID
+    'MsgBox clientN
+    
+    
+    
+    'obj_portfolio_master.Selection.HomeKey Unit:=wdStory
+    
+    'MsgBox Join(locations, vbCrLf)  'Code that list the locations found in the raw data
+    'MsgBox Join(locid, vbCrLf)  'Code that list the locations found in the raw data
+    
+    
+    'MsgBox "the number of locations is " & loc_no  'Code that displays number of locations extracted
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("no_bldgs").Item(1).Range.text = loc_no
+    
+        
+    
+   
+    Dim lcounter As Integer
+    If loc_no > 10 Then
+        lcounter = 10
+    Else
+        lcounter = loc_no
+    End If
+    
+    
+
+    
+For l_C = 1 To lcounter
+
+    addAssets (locid(l_C))
+    Sheets("Assetcalc data").Select
+    'First building code starts here
+    Dim lookup_ptype As Range
+    Set lookup_ptype = Range("A1:AZ20").Find("planType")
+    Dim ptype_col As Long
+    ptype_col = lookup_ptype.Column
+    
+    Dim lookup_rul As Range
+    Set lookup_rul = Range("A1:AZ20").Find("rul")
+    Dim rul_col As Long
+    rul_col = lookup_rul.Column
+    
+    
+   ' Dim lookup_curY As Range
+   ' Set lookup_curY = Range("A1:AZ20").Find("Fiscal Year Observed")
+   ' Dim cur_year_col As Long
+   ' cur_year_col = lookup_curY.Column
+    
+    Dim lookup_ufc As Range
+    Set lookup_ufc = Range("A1:AZ20").Find("ufCode")
+    Dim ufc_col As Long
+    ufc_col = lookup_ufc.Column
+    
+    Dim lookup_quan As Range
+    Set lookup_quan = Range("A1:AZ20").Find("quantity")
+    Dim quan_col As Long
+    quan_col = lookup_quan.Column
+    
+    Dim lookup_compd As Range
+    Set lookup_compd = Range("A1:AZ20").Find("label", LookAt:=xlWhole)
+    Dim comp_col As Long
+    comp_col = lookup_compd.Column
+    'MsgBox "label col is:" & comp_col
+    
+    Dim lookup_cap As Range
+    Set lookup_cap = Range("A1:AZ20").Find("param1")
+    Dim cap_col As Long
+    cap_col = lookup_cap.Column
+    'MsgBox "cap col is:" & cap_col
+      
+    Dim lookup_cond As Range
+    Set lookup_cond = Range("A1:AZ20").Find("condition")
+    Dim cond_col As Long
+    cond_col = lookup_cond.Column
+    
+    Dim lookup_act As Range
+    Set lookup_act = Range("A1:AZ20").Find("actionDescription")
+    Dim act_col As Long
+    act_col = lookup_act.Column
+    
+    Dim lookup_comm As Range
+    Set lookup_comm = Range("A1:AZ20").Find("notesPublic")
+    Dim comm_col As Long
+    comm_col = lookup_comm.Column
+    
+    
+    'obj_portfolio_master.Selection.GoTo What:=wdGoToBookmark, Name:="trial2"
+    
+    
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg" & l_C).Item(1).Range.text = locations(l_C)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg" & l_C).Item(2).Range.text = locations(l_C)
+'    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg1").Item(1).Range.Text = locations(0)
+    
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg_head" & l_C).Item(1).Range.text = locations(l_C)
+    
+    Dim cur_lrow As Long
+    cur_lrow = L_row
+    'MsgBox cur_lrow
+    
+    Dim cur_frow As Long
+    cur_frow = 2
+    'MsgBox cur_frow
+    
+    'text control declarations here (DEC01)
+    Dim extWall As String
+    Dim extWind As String
+    Dim intWall As String
+    Dim intFloor As String
+    Dim intCeil As String
+    Dim elev As String
+    Dim lift As String
+    Dim plumb As String
+    Dim hvac_ctr As String
+    Dim hvac_indi As String
+    Dim hvac_term As String
+    Dim hvac_supp As String
+    Dim restroom As String
+    Dim fire As String
+    Dim elec_sour As String
+    Dim elec_lght As String
+    Dim elec_emer As String
+    Dim alarm As String
+    Dim equip As String
+    Dim pav As String
+    Dim site_sign As String
+    Dim site_play As String
+    Dim site_furn As String
+    Dim land_irri As String
+    Dim land_ret As String
+    Dim util_water As String
+    Dim util_elec As String
+    Dim lgt_pole As String
+    Dim lgt_bldg As String
+    Dim lgt_walk As String
+    Dim anc As String
+    Dim findings As String
+    Dim elev_car As Integer
+    Dim elev_floor As String
+    Dim lgt_bmount As String
+    
+    
+    
+    elev_car = 0
+    elev_floor = ""
+    
+    extWall = ""
+    extWind = ""
+     intWall = ""
+     intFloor = ""
+     intCeil = ""
+     elev = ""
+     lift = ""
+     plumb = ""
+     hvac_ctr = ""
+     hvac_indi = ""
+     hvac_term = ""
+     hvac_supp = ""
+     restroom = ""
+     fire = ""
+     elec_sour = ""
+     elec_lght = ""
+     elec_emer = ""
+     alarm = ""
+     equip = ""
+     pav = ""
+     site_sign = ""
+     site_play = ""
+     site_furn = ""
+     land_irri = ""
+     land_ret = ""
+     util_water = ""
+     util_elec = ""
+     lgt_pole = ""
+     lgt_bldg = ""
+     lgt_walk = ""
+     anc = ""
+     findings = ""
+    
+     'condtion arrays go here(CON01)
+    Dim fac_cond() As String
+    ReDim fac_cond(0 To 0)
+    Dim fac_index As Integer
+    fac_index = 0
+       
+    Dim roof_index As Integer
+    Dim roof_cond() As String
+    ReDim roof_cond(0 To 0)
+    roof_index = 0
+    
+    Dim intr_index As Integer
+    Dim intr_cond() As String
+    ReDim intr_cond(0 To 0)
+    intr_index = 0
+    
+    
+    Dim elev_index As Integer
+    Dim elev_cond() As String
+    ReDim elev_cond(0 To 0)
+    elev_index = 0
+    
+    Dim plum_index As Integer
+    Dim plum_cond() As String
+    ReDim plum_cond(0 To 0)
+    plum_index = 0
+    
+    Dim hvac_index As Integer
+    Dim hvac_cond() As String
+    ReDim hvac_cond(0 To 0)
+    hvac_index = 0
+    
+    Dim fire_index As Integer
+    Dim fire_cond() As String
+    ReDim fire_cond(0 To 0)
+    fire_index = 0
+    
+    Dim elec_index As Integer
+    Dim elec_cond() As String
+    ReDim elec_cond(0 To 0)
+    elec_index = 0
+    
+    Dim eqip_index As Integer
+    Dim eqip_cond() As String
+    ReDim eqip_cond(0 To 0)
+    eqip_index = 0
+    
+    Dim pav_index As Integer
+    Dim pav_cond() As String
+    ReDim pav_cond(0 To 0)
+    pav_index = 0
+    
+    Dim alrm_index As Integer
+    Dim alrm_cond() As String
+    ReDim alrm_cond(0 To 0)
+    alrm_index = 0
+    
+    Dim site_index As Integer
+    Dim site_cond() As String
+    ReDim site_cond(0 To 0)
+    site_index = 0
+    
+    Dim land_index As Integer
+    Dim land_cond() As String
+    ReDim land_cond(0 To 0)
+    land_index = 0
+    
+    Dim util_index As Integer
+    Dim util_cond() As String
+    ReDim util_cond(0 To 0)
+    util_index = 0
+    
+    Dim lght_index As Integer
+    Dim lght_cond() As String
+    ReDim lght_cond(0 To 0)
+    lght_index = 0
+    
+    Dim anc_index As Integer
+    Dim anc_cond() As String
+    ReDim anc_cond(0 To 0)
+    anc_index = 0
+    
+    
+    Dim max_sf As Long
+    Dim smax_sf As Long
+    Dim prim_roof_row As Integer
+    Dim sec_roof_row As Integer
+    sec_roof_row = 0
+    
+
+    
+    
+    max_sf = 0
+    smax_sf = 0
+    
+     
+    
+    'code to determine what the primary roof and sec roof rows are
+    For j = cur_frow To cur_lrow
+            If Cells(j, comp_col) = "Roof" And Cells(j, quan_col) > max_sf Then
+                max_sf = Cells(j, quan_col)
+                prim_roof_row = j
+                'MsgBox j
+            End If
+        
+            If Cells(j, comp_col) = "Roof" And Cells(j, quan_col) < max_sf And Cells(j, quan_col) > smax_sf Then
+                smax_sf = Cells(j, quan_col)
+                sec_roof_row = j
+                'MsgBox j
+            End If
+              
+    Next j
+    
+    
+    'Hyperloop starts her (LOP01)
+
+    For i = cur_frow To cur_lrow
+     
+    If Cells(i, ufc_col) Like "B*" Then
+        If Cells(i, comp_col) = "Exterior Wall" Then
+            fac_cond(fac_index) = Cells(i, cond_col)
+            ReDim Preserve fac_cond(fac_index + 1)
+            'MsgBox "the condition added to the array is" & fac_cond(fac_index)
+            fac_index = fac_index + 1
+            
+            If Cells(i, cap_col) Like "Joint Caulking*" Then
+               If InStr(extWall, "Brick") > 0 Then
+                'do nothing
+               Else
+                    If extWall = "" Then
+                        extWall = "Brick "
+                    Else
+                        extWall = extWall & ", brick"
+                    End If
+               End If
+                
+            End If
+               
+         
+            
+           If Cells(i, cap_col) Like "Aluminum Siding*" Then
+                If InStr(extWall, "Aluminum Siding") > 0 Then
+                'do nothing
+                Else
+                    If extWall = "" Then
+                        extWall = "Aluminum siding "
+                    Else
+                        extWall = extWall & ", aluminum siding "
+                    End If
+               End If
+           End If
+           
+           If Cells(i, cap_col) Like "Brick*" Then
+               If InStr(extWall, "Brick") > 0 Then
+                'do nothing
+               Else
+                    If extWall = "" Then
+                        extWall = "Brick "
+                    Else
+                        extWall = extWall & ", brick"
+                    End If
+               End If
+           End If
+            
+            If Cells(i, cap_col) Like "Concrete*" Then
+                If InStr(extWall, "Concrete") > 0 Then
+                'do nothing
+               Else
+                    If extWall = "" Then
+                        extWall = "Concrete "
+                    Else
+                        extWall = extWall & ", concrete"
+                    End If
+               End If
+            End If
+        End If ' facade block ends here
+        
+        If Cells(i, comp_col) = "Window" Then
+            fac_cond(fac_index) = Cells(i, cond_col)
+            ReDim Preserve fac_cond(fac_index + 1)
+            fac_index = fac_index + 1
+            
+            If Cells(i, cap_col) Like "Aluminum*" Then
+                If InStr(extWind, "Aluminum") > 0 Then
+                'do nothing
+               Else
+                    If extWind = "" Then
+                        extWind = "Aluminum "
+                    Else
+                        extWind = extWind & ", aluminum"
+                    End If
+               End If
+
+               
+            End If
+            
+            If Cells(i, cap_col) Like "Steel*" Then
+                If InStr(extWind, "Steel") > 0 Then
+                'do nothing
+               Else
+                    If extWind = "" Then
+                        extWind = "Steel"
+                    Else
+                        extWind = extWind & ", steel"
+                    End If
+               End If
+
+                
+            End If
+            
+            If Cells(i, cap_col) Like "Vinyl*" Then
+                If InStr(extWind, "Vinyl") > 0 Then
+                'do nothing
+               Else
+                    If extWind = "" Then
+                        extWind = "Vinyl"
+                    Else
+                        extWind = extWind & ", vinyl"
+                    End If
+               End If
+
+            End If
+            
+            If Cells(i, cap_col) Like "Wood*" Then
+               If InStr(extWind, "Wood") > 0 Then
+                'do nothing
+               Else
+                    If extWind = "" Then
+                        extWind = "Wood"
+                    Else
+                        extWind = extWind & ", wood"
+                    End If
+               End If
+
+            End If
+            
+        
+        End If 'window block ends here
+        
+        If Cells(i, comp_col) Like "Exterior Stairs*" Then
+      
+      pav_cond(pav_index) = Cells(i, cond_col)
+      ReDim Preserve pav_cond(pav_index + 1)
+      pav_index = pav_index + 1
+       
+      
+       If InStr(pav, "stairs") > 0 Then
+                'do nothing
+         Else
+            If pav = "" Then
+                pav = "Stairs "
+            Else
+                pav = pav & ",stairs "
+            End If
+       
+       End If
+      End If 'stairs block ends here
+      
+    If Cells(i, comp_col) Like "Exterior Ramp*" Then
+      
+      pav_cond(pav_index) = Cells(i, cond_col)
+      ReDim Preserve pav_cond(pav_index + 1)
+      pav_index = pav_index + 1
+           
+       If InStr(pav, "ramps") > 0 Then
+                'do nothing
+         Else
+         
+        If pav = "" Then
+            pav = "Ramps "
+        Else
+            pav = pav & ",ramps "
+        End If
+       
+       End If
+      End If 'ramp block ends here
+      
+    If Cells(i, comp_col) Like "Exterior Stairs & Ramps*" Then
+      
+      pav_cond(pav_index) = Cells(i, cond_col)
+      ReDim Preserve pav_cond(pav_index + 1)
+      pav_index = pav_index + 1
+            
+       If InStr(pav, "stairs") > 0 Then
+                'do nothing
+         Else
+        If pav = "" Then
+            pav = "Ramps "
+        Else
+            pav = pav & ",ramps "
+        End If
+       End If
+      End If 'ramp block ends here
+        
+        If Cells(i, comp_col) = "Roof" Then
+            
+            roof_cond(roof_index) = Cells(i, cond_col)
+            ReDim Preserve roof_cond(roof_index + 1)
+            roof_index = roof_index + 1
+            
+            If i = prim_roof_row Then
+                
+                If Cells(i, cap_col) Like "Asphalt*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "Asphalt Shingles"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Built*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "Built-Up finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Clay*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "Clay tiles"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Concrete Tile*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "Concrete tiles"
+                
+                
+                ElseIf Cells(i, cap_col) = "Fibergaglass Dome" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Dome "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "Fiberglass finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Metal*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "Metal finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Modified*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "Modified Bituminous finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Single-Ply EPDM*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "EPDM finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Rubber Slate*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "Rubber slate tiles"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Single-Ply TPO*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "TPO finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Single-Ply PVC*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "PVC finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Slate*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("prim_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("primRoof_fin" & l_C).Item(1).Range.text = "Slate shingles"
+                End If
+                
+            End If ' primary roof block ends here
+            
+            If i = sec_roof_row Then
+                
+                If Cells(i, cap_col) Like "Asphalt*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "Asphalt Shingles"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Built*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "Built-Up finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Clay*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "Clay tiles"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Concrete Tile*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "Concrete tiles"
+            
+                
+                ElseIf Cells(i, cap_col) = "Fibergaglass Dome*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Dome "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "Fiberglass finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Metal*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "Metal finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Modified*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "Modified Bituminous finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Single-Ply EPDM*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "EPDM finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Rubber Slate*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "Rubber slate tiles"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Single-Ply TPO*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "TPO finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Single-Ply PVC*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Flat "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "PVC finish"
+                
+                
+                ElseIf Cells(i, cap_col) Like "Slate*" Then
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("sec_roof" & l_C).Item(1).Range.text = "Pitched "
+                obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("secRoof_fin" & l_C).Item(1).Range.text = "Slate shingles"
+                End If
+                
+            End If ' secondary roof block ends here
+        
+        End If 'roof block ends here
+      End If 'UF B ends here
+        
+     If Cells(i, ufc_col) Like "C*" Then
+      If Cells(i, comp_col) Like "Interior*" Then
+        
+        intr_cond(intr_index) = Cells(i, cond_col)
+        ReDim Preserve intr_cond(intr_index + 1)
+        intr_index = intr_index + 1
+        
+        If Cells(i, comp_col) Like "Interior Wall*" Then
+        
+            If Cells(i, cap_col) Like "any surface*" Then
+            
+            If InStr(intWall, "Painted Gypsum/CMU Walls") > 0 Then
+                'do nothing
+               Else
+                    If intWall = "" Then
+                        intWall = "Painted Gypsum/CMU Walls"
+                    Else
+                        intWall = intWall & ", painted Gypsum/CMU Walls"
+                    End If
+               End If
+            End If
+            
+            
+            If Cells(i, cap_col) Like "Painted CMU*" Then
+            If InStr(intWall, "Painted CMU") > 0 Then
+                'do nothing
+               Else
+                    If intWall = "" Then
+                        intWall = "Painted CMU"
+                    Else
+                        intWall = intWall & ", painted CMU"
+                    End If
+               End If
+            End If
+            
+            
+        If Cells(i, cap_col) Like "Acoustical Tile (ACT)*" Then
+            
+            If InStr(intWall, "Acoustical Tile (ACT)") > 0 Then
+                'do nothing
+               Else
+                    If intWall = "" Then
+                        intWall = "Acoustical Tile (ACT)"
+                    Else
+                        intWall = intWall & ", acoustical Tile (ACT)"
+                    End If
+               End If
+            End If
+            
+        If Cells(i, cap_col) Like "Aluminum Siding*" Then
+            If InStr(intWall, "Aluminum Siding") > 0 Then
+                'do nothing
+               Else
+                    If intWall = "" Then
+                        intWall = "aluminum Siding"
+                    Else
+                        intWall = intWall & ", aluminum Siding"
+                    End If
+               End If
+
+            End If
+            
+         If Cells(i, cap_col) Like "Ceramic Tile*" Then
+            
+            If InStr(intWall, "Ceramic Tile") > 0 Then
+                'do nothing
+               Else
+                    If intWall = "" Then
+                        intWall = "Ceramic Tile"
+                    Else
+                        intWall = intWall & ", ceramic Tile"
+                    End If
+               End If
+            End If
+            
+         If Cells(i, cap_col) Like "Gypsum*" Then
+            
+            If InStr(intWall, "Gypsum Board/Plaster") > 0 Then
+                'do nothing
+               Else
+                    If intWall = "" Then
+                        intWall = "Gypsum Board/Plaster"
+                    Else
+                        intWall = intWall & ", gypsum Board/Plaster"
+                    End If
+               End If
+            End If
+            
+          If Cells(i, cap_col) Like "Plywood*" Then
+            
+            If InStr(intWall, "Plywood") > 0 Then
+                'do nothing
+               Else
+                    If intWall = "" Then
+                        intWall = "Plywood"
+                    Else
+                        intWall = intWall & ", plywood"
+                    End If
+               End If
+
+            End If
+            
+        End If 'int walls block ends here
+        
+        If Cells(i, comp_col) Like "Interior Floor*" Then
+            
+            If Cells(i, cap_col) Like "Concrete*" Then
+            
+            If InStr(intFloor, "Concrete") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Concrete"
+                    Else
+                        intFloor = intFloor & ", concrete"
+                    End If
+               End If
+
+            End If
+            
+            If Cells(i, cap_col) Like "Ceramic Tile*" Then
+            
+            
+            If InStr(intFloor, "Ceramic Tile") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Ceramic Tile"
+                    Else
+                        intFloor = intFloor & ", ceramic Tile"
+                    End If
+               End If
+            End If
+            
+            If Cells(i, cap_col) Like "Clay Brick*" Then
+            
+            If InStr(intFloor, "Clay Brick") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Clay Brick"
+                    Else
+                        intFloor = intFloor & ", clay Brick"
+                    End If
+               End If
+
+            End If
+            
+            If Cells(i, cap_col) Like "Fiberglass Panel*" Then
+            
+            If InStr(intFloor, "Fiberglass Panel ") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Fiberglass Panel "
+                    Else
+                        intFloor = intFloor & ", fiberglass Panel "
+                    End If
+               End If
+
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Laminate Faux Wood*" Then
+            
+            If InStr(intFloor, "Laminate Faux Wood") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Laminate Faux Wood"
+                    Else
+                        intFloor = intFloor & ", laminate Faux Wood"
+                    End If
+               End If
+
+            End If
+            
+            If Cells(i, cap_col) Like "Linoleum*" Then
+            
+            
+            If InStr(intFloor, "Linoleum") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Linoleum"
+                    Else
+                        intFloor = intFloor & ", linoleum"
+                    End If
+               End If
+
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Maple Sports Floor*" Then
+            
+            
+            If InStr(intFloor, "Maple Sports Floor") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Maple Sports Floor"
+                    Else
+                        intFloor = intFloor & ", maple Sports Floor"
+                    End If
+               End If
+
+            End If
+            
+            If Cells(i, cap_col) Like "Marble*" Then
+            
+            If InStr(intFloor, "Marble") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Marble"
+                    Else
+                        intFloor = intFloor & ", marble"
+                    End If
+               End If
+
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Plywood*" Then
+            
+            If InStr(intFloor, "Plywood") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Plywood"
+                    Else
+                        intFloor = intFloor & ", plywood"
+                    End If
+               End If
+
+            End If
+            
+            If Cells(i, cap_col) Like "Quarry Tile*" Then
+            
+            If InStr(intFloor, "Quarry Tile") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Quarry Tile"
+                    Else
+                        intFloor = intFloor & ", quarry Tile"
+                    End If
+               End If
+
+            End If
+            
+            If Cells(i, cap_col) Like "Rubber Tile*" Then
+            
+            If InStr(intFloor, "Rubber Tile") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Rubber Tile"
+                    Else
+                        intFloor = intFloor & ", rubber Tile"
+                    End If
+               End If
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Terrazzo*" Then
+            
+            If InStr(intFloor, "Terrazzo") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Terrazzo"
+                    Else
+                        intFloor = intFloor & ", terrazzo"
+                    End If
+               End If
+
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Vinyl Sheeting*" Then
+            
+            If InStr(intFloor, "Vinyl Sheeting") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Vinyl Sheeting"
+                    Else
+                        intFloor = intFloor & ", vinyl Sheeting"
+                    End If
+               End If
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Vinyl Tile*" Then
+            
+            If InStr(intFloor, "Vinyl Tile(VCT)") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Vinyl Tile(VCT)"
+                    Else
+                        intFloor = intFloor & ", vinyl Tile(VCT)"
+                    End If
+               End If
+
+            End If
+            
+            If Cells(i, cap_col) Like "Steel*" Then
+            
+            
+            If InStr(intFloor, "Steel") > 0 Then
+                'do nothing
+               Else
+                    If intFloor = "" Then
+                        intFloor = "Steel"
+                    Else
+                        intFloor = intFloor & ", Steel"
+                    End If
+               End If
+
+            
+            End If
+            
+        End If 'int floors block ends here
+        
+        If Cells(i, comp_col) Like "Interior Ceiling*" Then
+            
+            If Cells(i, cap_col) Like "any flat*" Then
+            
+            If InStr(intCeil, "Painted Gypsum") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Painted Gypsum"
+                    Else
+                        intCeil = intCeil & ", painted Gypsum"
+                    End If
+               End If
+
+            End If
+            
+            If Cells(i, cap_col) Like "Gypsum Board*" Then
+            
+            If InStr(intCeil, "Painted Gypsum") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Painted Gypsum"
+                    Else
+                        intCeil = intCeil & ", painted Gypsum"
+                    End If
+               End If
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Metal*" Then
+            
+            If InStr(intCeil, "Metal") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Metal"
+                    Else
+                        intCeil = intCeil & ", metal"
+                    End If
+               End If
+
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Plastic*" Then
+            
+            If InStr(intCeil, "Plastic Fiberglass-Reinforced") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Plastic Fiberglass-Reinforced"
+                    Else
+                        intCeil = intCeil & ", plastic Fiberglass-Reinforced"
+                    End If
+               End If
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Plywood*" Then
+            
+            If InStr(intCeil, "Plywood") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Plywood"
+                    Else
+                        intCeil = intCeil & ", plywood"
+                    End If
+               End If
+
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Textured*" Then
+            
+            If InStr(intCeil, "Textured Spray Coating") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Textured Spray Coating"
+                    Else
+                        intCeil = intCeil & ", textured Spray Coating"
+                    End If
+               End If
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Wood*" Then
+            
+            If InStr(intCeil, "Wood") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Wood"
+                    Else
+                        intCeil = intCeil & ", wood"
+                    End If
+               End If
+
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Fiberglass*" Then
+            
+            If InStr(intCeil, "Fiberglass Panel") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Fiberglass Panel"
+                    Else
+                        intCeil = intCeil & ", Fiberglass Panel"
+                    End If
+               End If
+
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Hard*" Then
+            
+            If InStr(intCeil, "Hard Tile Ceiling") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Hard Tile Ceiling"
+                    Else
+                        intCeil = intCeil & ", hard Tile Ceiling"
+                    End If
+               End If
+            
+            End If
+            
+            If Cells(i, cap_col) Like "Suspended*" Then
+            
+            If InStr(intCeil, "Suspended Acoustical Tile") > 0 Then
+                'do nothing
+               Else
+                    If intCeil = "" Then
+                        intCeil = "Suspended Acoustical Tile"
+                    Else
+                        intCeil = intCeil & ", suspended Acoustical Tile"
+                    End If
+               End If
+            
+            End If
+            
+        
+        End If 'int ceilings block ends here
+      End If 'interior finishes block ends here
+    End If 'UF C ends here
+       
+    If Cells(i, ufc_col) Like "D*" Then
+       If Cells(i, comp_col) Like "Elevator" Then
+        
+        elev_cond(elev_index) = Cells(i, cond_col)
+        ReDim Preserve elev_cond(elev_index + 1)
+        elev_index = elev_index + 1
+        
+        If Cells(i, cap_col) Like "Hydraulic*" Then
+            elev_car = elev_car + 1
+        If InStr(elev, "Hydraulic") > 0 Then
+                'do nothing
+               Else
+                    If elev = "" Then
+                        elev = "Hydraulic"
+                        elev_floor = Mid(Cells(i, cap_col), 21, 2)
+                    Else
+                        elev = elev & ", Hydraulic"
+                    End If
+               End If
+        End If
+        
+        If Cells(i, cap_col) Like "Overhead*" Then
+            elev_car = elev_car + 1
+        If InStr(elev, "Overhead Traction") > 0 Then
+                'do nothing
+               Else
+                    If elev = "" Then
+                        elev = "Overhead traction"
+                        elev_floor = Mid(Cells(i, cap_col), 29, 2)
+                    Else
+                        elev = elev & ", Overhead traction"
+                    End If
+               End If
+        End If
+        
+        'add code to append a wheelchair lift here
+        
+       End If  'elevator block ends here
+       
+       If Cells(i, comp_col) Like "Escalator*" Then
+        elev_cond(elev_index) = Cells(i, cond_col)
+        ReDim Preserve elev_cond(elev_index + 1)
+        elev_index = elev_index + 1
+         
+        If InStr(lift, "escalator") > 0 Then
+                'do nothing
+               Else
+                    If lift = "" Then
+                        lift = "Escalator"
+                    Else
+                        lift = lift & ", escalator"
+                    End If
+        End If
+        
+       End If ' Escalator block ends here
+       
+       If Cells(i, cap_col) Like "Wheelchair*" Then
+        elev_cond(elev_index) = Cells(i, cond_col)
+        ReDim Preserve elev_cond(elev_index + 1)
+        elev_index = elev_index + 1
+         
+        If InStr(lift, "wheelchair lift") > 0 Then
+                'do nothing
+               Else
+                    If lift = "" Then
+                        lift = "Wheelchair lift"
+                    Else
+                        lift = lift & ", wheelchair lift"
+                    End If
+               End If
+
+        
+       End If ' Wheelchair lift block ends here
+       
+        If Cells(i, comp_col) Like "Dumbwaiter*" Then
+        elev_cond(elev_index) = Cells(i, cond_col)
+        ReDim Preserve elev_cond(elev_index + 1)
+        elev_index = elev_index + 1
+         
+        If InStr(lift, "dumbwaiter") > 0 Then
+                'do nothing
+               Else
+                    If lift = "" Then
+                        lift = "dumbwaiter"
+                    Else
+                        lift = lift & ", dumbwaiter"
+                    End If
+               End If
+
+        
+       End If ' Dumbwaiter block ends here
+       
+       If Cells(i, comp_col) = "Water Heater" Then
+        
+        plum_cond(plum_index) = Cells(i, cond_col)
+        ReDim Preserve plum_cond(plum_index + 1)
+        plum_index = plum_index + 1
+        
+        
+        If Cells(i, cap_col) Like "Electric*" Then
+        
+        If InStr(plumb, "Electric water heaters") > 0 Then
+                'do nothing
+               Else
+                    If plumb = "" Then
+                        plumb = "Electric water heaters"
+                    Else
+                        plumb = plumb & ", Electric water heaters"
+                    End If
+               End If
+
+        
+        End If
+        
+        If Cells(i, cap_col) Like "Gas*" Then
+        If InStr(plumb, "Gas water heaters") > 0 Then
+                'do nothing
+               Else
+                    If plumb = "" Then
+                        plumb = "Gas water heaters"
+                    Else
+                        plumb = plumb & ", Gas water heaters"
+                    End If
+               End If
+        
+        End If
+        
+        
+       End If 'plumbing block ends here
+       
+       If Cells(i, comp_col) Like "Domestic Boiler*" Then
+       
+       plum_cond(plum_index) = Cells(i, cond_col)
+       ReDim Preserve plum_cond(plum_index + 1)
+       plum_index = plum_index + 1
+       
+       
+       If InStr(plumb, "Domestic Gas Boilers") > 0 Then
+                'do nothing
+               Else
+                    If plumb = "" Then
+                        plumb = "Domestic Gas Boilers"
+                    Else
+                        plumb = plumb & ", domestic Gas Boilers"
+                    End If
+               End If
+
+       
+       
+       End If
+       
+       If Cells(i, comp_col) Like "Boiler*" Then
+       
+        hvac_cond(hvac_index) = Cells(i, cond_col)
+        ReDim Preserve hvac_cond(hvac_index + 1)
+        hvac_index = hvac_index + 1
+       
+       If InStr(hvac_ctr, "Boiler") > 0 Then
+                'do nothing
+        Else
+
+            If hvac_ctr = "" Then
+                hvac_ctr = "Central system with boilers"
+            Else
+                hvac_ctr = hvac_ctr & ", boilers "
+            End If
+        End If
+       End If 'Boiler block ends here
+       
+       If Cells(i, comp_col) Like "Chiller*" Then
+       
+       hvac_cond(hvac_index) = Cells(i, cond_col)
+       ReDim Preserve hvac_cond(hvac_index + 1)
+       hvac_index = hvac_index + 1
+        
+       If InStr(hvac_ctr, "Chiller") > 0 Then
+                'do nothing
+        Else
+ 
+            If hvac_ctr = "" Then
+                hvac_ctr = "Central system with chillers"
+            Else
+                hvac_ctr = hvac_ctr & ", chillers "
+            End If
+        
+        End If
+        
+       End If 'Chiller block ends here
+       
+       If Cells(i, comp_col) Like "Air Handler*" Then
+       
+       hvac_cond(hvac_index) = Cells(i, cond_col)
+       ReDim Preserve hvac_cond(hvac_index + 1)
+       hvac_index = hvac_index + 1
+       
+       If InStr(hvac_ctr, "Air Handler") > 0 Then
+                'do nothing
+        Else
+            If hvac_ctr = "" Then
+                hvac_ctr = "Central system with air handlers"
+            Else
+                hvac_ctr = hvac_ctr & ", air handlers "
+            End If
+        End If
+       End If 'Air handler block ends here
+       
+       If Cells(i, comp_col) Like "Cooling Tower*" Then
+       
+       hvac_cond(hvac_index) = Cells(i, cond_col)
+       ReDim Preserve hvac_cond(hvac_index + 1)
+       hvac_index = hvac_index + 1
+       
+       If InStr(hvac_ctr, "Cooling Tower") > 0 Then
+                'do nothing
+               Else
+
+       If hvac_ctr = "" Then
+            hvac_ctr = "Central system with cooling towers"
+        Else
+            hvac_ctr = hvac_ctr & ", cooling towers "
+        End If
+       
+       End If
+       
+       End If 'Cooling tower block ends here
+       
+       If Cells(i, comp_col) Like "Variable Air*" Then
+       
+       hvac_cond(hvac_index) = Cells(i, cond_col)
+       ReDim Preserve hvac_cond(hvac_index + 1)
+       hvac_index = hvac_index + 1
+              
+       If InStr(hvac_term, "Feeding VAVA") > 0 Then
+                'do nothing
+               Else
+       
+        If hvac_term = "" Then
+            hvac_term = "Feeding VAV"
+        Else
+            hvac_term = hvac_term & ", feeding VAV "
+        End If
+       End If
+      End If 'vav block ends here
+      
+      
+      If Cells(i, comp_col) Like "Fan Coil*" Then
+      
+      hvac_cond(hvac_index) = Cells(i, cond_col)
+      ReDim Preserve hvac_cond(hvac_index + 1)
+      hvac_index = hvac_index + 1
+      
+      If InStr(hvac_term, "fan coil units") > 0 Then
+                'do nothing
+               Else
+
+        If hvac_term = "" Then
+            hvac_term = "Fan coil units"
+        Else
+            hvac_term = hvac_term & ", fan coil units "
+        End If
+       End If
+      End If 'fan coil block ends here
+       
+        
+      If Cells(i, comp_col) Like "Radiator*" Then
+      
+      hvac_cond(hvac_index) = Cells(i, cond_col)
+      ReDim Preserve hvac_cond(hvac_index + 1)
+      hvac_index = hvac_index + 1
+      
+      If InStr(hvac_term, "Hydronic baseboard radiator") > 0 Then
+                'do nothing
+           Else
+
+        If hvac_term = "" Then
+            hvac_term = "Hydronic baseboard radiator"
+        Else
+            hvac_term = hvac_term & ", hydronic baseboard radiator "
+        End If
+       End If
+      End If 'radiator block ends here
+      
+      If Cells(i, comp_col) Like "Packaged Unit(RTU)*" Then
+      
+      hvac_cond(hvac_index) = Cells(i, cond_col)
+      ReDim Preserve hvac_cond(hvac_index + 1)
+      hvac_index = hvac_index + 1
+       
+       If InStr(hvac_indi, "Packaged Unit") > 0 Then
+                'do nothing
+               Else
+
+        If hvac_indi = "" Then
+            hvac_indi = "Packaged Unit"
+        Else
+            hvac_indi = hvac_indi & ", Packaged Unit "
+        End If
+       
+       End If
+      
+      End If 'rtu block ends here
+      
+      If Cells(i, comp_col) Like "Condensing Unit/Heat Pump*" Or Cells(i, comp_col) Like "Heat Pump*" Or Cells(i, comp_col) Like "Condensing Unit*" Then
+      
+      hvac_cond(hvac_index) = Cells(i, cond_col)
+      ReDim Preserve hvac_cond(hvac_index + 1)
+      hvac_index = hvac_index + 1
+       
+       If InStr(hvac_indi, "Heat pump") > 0 Then
+                'do nothing
+          Else
+
+            If hvac_indi = "" Then
+                hvac_indi = "Heat Pump"
+            Else
+                hvac_indi = hvac_indi & ", Heat Pump "
+            End If
+       End If
+       
+      End If 'heat pump block ends here
+      
+      
+      
+      If Cells(i, comp_col) Like "Water Source Heat Pump*" Then
+      
+      hvac_cond(hvac_index) = Cells(i, cond_col)
+      ReDim Preserve hvac_cond(hvac_index + 1)
+      hvac_index = hvac_index + 1
+        If InStr(hvac_indi, "Water source heat pump") > 0 Then
+                'do nothing
+               Else
+
+            If hvac_indi = "" Then
+                hvac_indi = "Water Source Heat Pump"
+            Else
+                hvac_indi = hvac_indi & ",Water Source Heat Pump "
+            End If
+      
+         End If
+      End If 'water source heat pump block ends here
+      
+     If Cells(i, comp_col) Like "Packaged Terminal Air*" Then
+      
+      hvac_cond(hvac_index) = Cells(i, cond_col)
+      ReDim Preserve hvac_cond(hvac_index + 1)
+      hvac_index = hvac_index + 1
+       
+      If InStr(hvac_indi, "Packaged Terminal Air Conditioner (PTAC)") > 0 Then
+                'do nothing
+       Else
+ 
+            If hvac_indi = "" Then
+                hvac_indi = "Packaged Terminal Air Conditioner (PTAC)"
+            Else
+                hvac_indi = hvac_indi & ",Packaged Terminal Air Conditioner (PTAC) "
+            End If
+      
+       End If
+      End If 'ptac block ends here
+      
+     If Cells(i, comp_col) Like "Ductless Split*" Then
+      
+      hvac_cond(hvac_index) = Cells(i, cond_col)
+      ReDim Preserve hvac_cond(hvac_index + 1)
+      hvac_index = hvac_index + 1
+       
+       If InStr(hvac_supp, "Ductless Split System") > 0 Then
+                'do nothing
+           Else
+
+                If hvac_supp = "" Then
+                    hvac_supp = "Ductless Split System"
+                Else
+                    hvac_supp = hvac_supp & ",Ductless Split System "
+                End If
+      
+        End If
+      End If 'ductless ssy block ends here
+   
+    If Cells(i, comp_col) Like "Fuel Storage Tank*" Then
+      If InStr(util_elec, "fuel storage") > 0 Then
+                'do nothing
+               Else
+
+      util_elec = " with fuel storage tanks"
+    
+     End If
+    End If 'fuel storage tank block ends here
+    
+   
+   If Cells(i, comp_col) Like "Unit Heater*" Then
+      
+      hvac_cond(hvac_index) = Cells(i, cond_col)
+      ReDim Preserve hvac_cond(hvac_index + 1)
+      hvac_index = hvac_index + 1
+       
+       If InStr(hvac_supp, "Unit heater") > 0 Then
+                'do nothing
+               Else
+
+            If hvac_supp = "" Then
+                hvac_supp = "Unit Heater"
+            Else
+                hvac_supp = hvac_supp & ",Unit Heater "
+            End If
+      
+        End If
+      End If 'unit heater block ends here
+   
+   'assumes if rul =0, cost is for an installation recommendation, but if rul is greater than 0 the cost is for the renovation of an existing system
+   If Cells(i, comp_col) Like "Sprinkler System*" And Cells(i, rul_col) > 0 Then
+      
+      fire_cond(fire_index) = Cells(i, cond_col)
+      ReDim Preserve fire_cond(fire_index + 1)
+      fire_index = fire_index + 1
+       If InStr(fire, "Sprinkler system") > 0 Then
+                'do nothing
+               Else
+
+            If fire = "" Then
+                fire = "Sprinkler system,hydrants,hose cabinets"
+            Else
+                fire = fire & ",Sprinkler system,hydrants,hose cabinets "
+            End If
+       End If
+      End If 'Sprinkler block ends here
+      
+    If Cells(i, comp_col) Like "Fire Extinguisher*" Then
+      
+      fire_cond(fire_index) = Cells(i, cond_col)
+      ReDim Preserve fire_cond(fire_index + 1)
+      fire_index = fire_index + 1
+       
+       If InStr(fire, "Fire Extinguishers") > 0 Then
+                'do nothing
+         Else
+
+        If fire = "" Then
+            fire = "Fire Extinguishers"
+        Else
+            fire = fire & ",Fire Extinguishers "
+        End If
+        
+       End If
+      End If 'Extinguisher block ends here
+      
+      If Cells(i, comp_col) Like "Fire Suppression System*" And Cells(i, cap_col) Like "Commercial Kitchen*" Then
+      
+      fire_cond(fire_index) = Cells(i, cond_col)
+      ReDim Preserve fire_cond(fire_index + 1)
+      fire_index = fire_index + 1
+       
+       If InStr(fire, "Kitchen hood") > 0 Then
+                'do nothing
+               Else
+ 
+        If fire = "" Then
+            fire = "Kitchen Hood System"
+        Else
+            fire = fire & ",Kitchen Hood System "
+        End If
+      
+        End If
+      End If 'kitchen suppression block ends here
+   
+    If Cells(i, comp_col) Like "Building/Main Switchboard*" Then
+      
+      elec_cond(elec_index) = Cells(i, cond_col)
+      ReDim Preserve elec_cond(elec_index + 1)
+      elec_index = elec_index + 1
+       
+       If InStr(elec_sour, "Main Switchboard") > 0 Then
+                'do nothing
+        Else
+ 
+            If elec_sour = "" Then
+                elec_sour = "Main switchboard "
+            Else
+                elec_sour = elec_sour & ",main switchboard "
+            End If
+      
+        End If
+      End If 'switchboard block ends here
+      
+      
+    If Cells(i, comp_col) Like "Building/Main Switchgear*" Then
+      
+      elec_cond(elec_index) = Cells(i, cond_col)
+      ReDim Preserve elec_cond(elec_index + 1)
+      elec_index = elec_index + 1
+       
+       If InStr(elec_sour, "Main switchgear") > 0 Then
+                'do nothing
+          Else
+
+            If elec_sour = "" Then
+                elec_sour = "Main switchgear "
+            Else
+                elec_sour = elec_sour & ",main switchgear "
+            End If
+      
+        End If
+      End If 'switchgear block ends here
+      
+    If Cells(i, comp_col) Like "Main Distribution Panel*" Then
+      
+      elec_cond(elec_index) = Cells(i, cond_col)
+      ReDim Preserve elec_cond(elec_index + 1)
+      elec_index = elec_index + 1
+       
+       If InStr(elec_sour, "Main Distribution Panel") > 0 Then
+                'do nothing
+         Else
+
+            If elec_sour = "" Then
+                elec_sour = "Main Distribution Panel "
+            Else
+                elec_sour = elec_sour & ",distribution panel "
+            End If
+       End If
+       
+      End If 'distribution panel block ends here
+   
+   
+
+   
+    If Cells(i, comp_col) = "Generator" Then
+      
+      elec_cond(elec_index) = Cells(i, cond_col)
+      ReDim Preserve elec_cond(elec_index + 1)
+      elec_index = elec_index + 1
+       
+       If InStr(elec_emer, "Natural gas generator") > 0 Then
+                'do nothing
+         Else
+         
+       If Cells(i, cap_col) Like "Gas*" Then
+              
+            If elec_emer = "" Then
+                elec_emer = "Natural gas generator "
+            Else
+                elec_emer = elec_emer & ",natural gas generator "
+            End If
+      
+        
+       End If
+     End If
+            
+            
+       If InStr(elec_emer, "Generator") > 0 Then
+                'do nothing
+         Else
+       If Cells(i, cap_col) Like "Diesel generator*" Then
+              
+            If elec_emer = "" Then
+                elec_emer = "Diesel generator "
+            Else
+                elec_emer = elec_emer & ",diesel generator "
+            End If
+      
+       End If
+           
+      End If
+        
+     End If 'Generator block ends here
+     
+    If Cells(i, comp_col) Like "Uninterruptible Power Supply*" Then
+      
+      elec_cond(elec_index) = Cells(i, cond_col)
+      ReDim Preserve elec_cond(elec_index + 1)
+      elec_index = elec_index + 1
+       
+       
+       If InStr(elec_emer, "UPS") > 0 Then
+                'do nothing
+        Else
+
+            If elec_emer = "" Then
+                elec_emer = "UPS "
+            Else
+                elec_emer = elec_emer & " and UPS "
+            End If
+       End If
+      End If 'ups block ends here
+   
+    If Cells(i, comp_col) Like "Fire Alarm Control Panel*" Then
+      
+      alrm_cond(alrm_index) = Cells(i, cond_col)
+      ReDim Preserve alrm_cond(alrm_index + 1)
+      alrm_index = alrm_index + 1
+       
+      If InStr(alarm, "Alarm panel") > 0 Then
+                'do nothing
+         Else
+ 
+        If alarm = "" Then
+            alarm = "Alarm panel, smoke detectors "
+        Else
+            alarm = alarm & ",alarm panel, smoke detectors "
+        End If
+      
+       End If
+      End If 'control panel block ends here
+      
+    If Cells(i, comp_col) Like "Exit Sign*" Then
+      
+      alrm_cond(alrm_index) = Cells(i, cond_col)
+      ReDim Preserve alrm_cond(alrm_index + 1)
+      alrm_index = alrm_index + 1
+       
+       If InStr(alarm, "Exit signs") > 0 Then
+                'do nothing
+               Else
+
+        If alarm = "" Then
+            alarm = "Exit signs "
+        Else
+            alarm = alarm & ",exit signs "
+        End If
+      
+       End If
+      End If 'exit sign block ends here
+      
+    If Cells(i, comp_col) Like "Emergency Light*" Then
+      
+      alrm_cond(alrm_index) = Cells(i, cond_col)
+      ReDim Preserve alrm_cond(alrm_index + 1)
+      alrm_index = alrm_index + 1
+       
+       If InStr(alarm, "Emergency lights") > 0 Then
+                'do nothing
+         Else
+
+        If alarm = "" Then
+            alarm = "Emergency lights "
+        Else
+            alarm = alarm & ",emergency lights "
+        End If
+      
+       End If
+      End If 'emergency light block ends here
+   
+   If Cells(i, comp_col) Like "Emergency Light/Exit*" Then
+      
+      alrm_cond(alrm_index) = Cells(i, cond_col)
+      ReDim Preserve alrm_cond(alrm_index + 1)
+      alrm_index = alrm_index + 1
+       
+         If InStr(alarm, "Emergency light/Exit Combo LED") > 0 Then
+                'do nothing
+         Else
+        If alarm = "" Then
+            alarm = "Emergency light/Exit Combo LED "
+        Else
+            alarm = alarm & ",emergency light/combo LED "
+        End If
+      
+       End If
+      End If 'emergency light/combo led block ends here
+     End If 'UF D ends here
+     
+   If Cells(i, ufc_col) Like "E*" Or Cells(i, ufc_col) Like "F*" Then
+    If Cells(i, comp_col) Like "Commercial Kitchen*" Then
+      
+      eqip_cond(eqip_index) = Cells(i, cond_col)
+      ReDim Preserve eqip_cond(eqip_index + 1)
+      eqip_index = eqip_index + 1
+       
+       If InStr(equip, "Commercial kitchen equipment") > 0 Then
+                'do nothing
+         Else
+        If equip = "" Then
+            equip = "Commercial kitchen equipment "
+        Else
+            equip = equip & ",commercial kitchen equipment "
+        End If
+      
+       End If
+      End If 'commercial kitchen block ends here
+   
+   
+    If Cells(i, comp_col) Like "Swimming Pool*" Then
+      
+      eqip_cond(eqip_index) = Cells(i, cond_col)
+      ReDim Preserve eqip_cond(eqip_index + 1)
+      eqip_index = eqip_index + 1
+       
+        If InStr(equip, "Swimming pool equipment") > 0 Then
+                'do nothing
+         Else
+            If equip = "" Then
+                equip = "Swimming pool equipment "
+            Else
+                equip = equip & ",swimming pool equipment "
+            End If
+      
+       End If
+      End If 'swimming pool block ends here
+      
+      If Cells(i, comp_col) Like "Prefabricated*" Then
+      
+      anc_cond(anc_index) = Cells(i, cond_col)
+      ReDim Preserve anc_cond(site_index + 1)
+      anc_index = anc_index + 1
+            
+       If InStr(anc, "Prefabricated/ancillary") > 0 Then
+                'do nothing
+               Else
+ 
+            If anc = "" Then
+                anc = "Prefabricated/ancillary building or structure "
+            Else
+                anc = anc & ", prefabricated/ancillary building or structure "
+            End If
+     
+     End If
+    End If 'prefab block ends here
+      
+   End If 'UF E and F end here
+   
+  If Cells(i, ufc_col) Like "G*" Then
+      
+    If Cells(i, comp_col) Like "Parking Lot*" Then
+      
+      pav_cond(pav_index) = Cells(i, cond_col)
+      ReDim Preserve pav_cond(pav_index + 1)
+      pav_index = pav_index + 1
+       
+       If Cells(i, cap_col) Like "Asphalt*" Then
+         
+         If InStr(pav, "Asphalt lots") > 0 Then
+                'do nothing
+         Else
+            If pav = "" Then
+                pav = "Asphalt lots with areas of concrete and concrete sidewalks "
+            Else
+                pav = pav & ",asphalt lots with areas of concrete and concrete sidewalks "
+            End If
+       
+        End If
+       End If
+       
+       If Cells(i, cap_col) Like "Concrete*" Then
+       
+        
+        If InStr(pav, "Concrete") > 0 Then
+                'do nothing
+         Else
+        If pav = "" Then
+            pav = "COncrete lots with areas of concrete and concrete sidewalks "
+        Else
+            pav = pav & ",concrete lots with areas of concrete and concrete sidewalks "
+        End If
+       
+         End If
+       End If
+       
+      
+      End If 'parking block ends here
+      
+    
+     
+      
+    If Cells(i, comp_col) Like "Signage*" Then
+      
+      site_cond(site_index) = Cells(i, cond_col)
+      ReDim Preserve site_cond(site_index + 1)
+      site_index = site_index + 1
+            
+       If InStr(site_sign, "Signage") > 0 Then
+                'do nothing
+               Else
+     
+            If site_sign = "" Then
+                site_sign = "Signage "
+            Else
+                site_sign = site_sign & ",signage "
+            End If
+       End If
+    End If 'signage block ends here
+    
+  
+    
+    If Cells(i, comp_col) Like "Fences*" Then
+      
+      site_cond(site_index) = Cells(i, cond_col)
+      ReDim Preserve site_cond(site_index + 1)
+      site_index = site_index + 1
+            
+            
+       If Cells(i, cap_col) Like "Chain*" Then
+          If InStr(site_sign, "Chain link fencing") > 0 Then
+                'do nothing
+               Else
+    
+            If site_sign = "" Then
+                site_sign = "Chain link fencing "
+            Else
+                site_sign = site_sign & ",chain link fencing "
+            End If
+        End If
+       End If
+       
+       If Cells(i, cap_col) Like "Metal*" Then
+         If InStr(site_sign, "Metal tube fencing") > 0 Then
+                'do nothing
+               Else
+     
+            If site_sign = "" Then
+                site_sign = "Metal tube fencing "
+            Else
+                site_sign = site_sign & ",metal tube fencing "
+            End If
+        End If
+       End If
+       
+       If Cells(i, cap_col) Like "Vinyl*" Then
+          If InStr(site_sign, "Vinyl fencing") > 0 Then
+                'do nothing
+               Else
+    
+            If site_sign = "" Then
+                site_sign = "Vinyl fencing "
+            Else
+                site_sign = site_sign & ",vinyl fencing "
+            End If
+        End If
+       End If
+       
+       If Cells(i, cap_col) Like "Wood Board*" Then
+          If InStr(site_sign, "Wood Board fencing") > 0 Then
+                'do nothing
+               Else
+    
+            If site_sign = "" Then
+                site_sign = "Wood Board fencing "
+            Else
+                site_sign = site_sign & ",wood board fencing "
+            End If
+        
+        End If
+       End If
+       
+       If Cells(i, cap_col) Like "Wrought Iron*" Then
+          If InStr(site_sign, "Wrought iron fencing") > 0 Then
+                'do nothing
+               Else
+    
+            If site_sign = "" Then
+                site_sign = "Wrought iron fencing "
+            Else
+                site_sign = site_sign & ",wrought iron fencing "
+            End If
+         
+         End If
+       End If
+       
+    End If 'fencing block ends here
+    
+    If Cells(i, comp_col) Like "Dumpster Accessories*" Then
+      
+      site_cond(site_index) = Cells(i, cond_col)
+      ReDim Preserve site_cond(site_index + 1)
+      site_index = site_index + 1
+            
+            
+       If Cells(i, cap_col) Like "Concrete Block*" Then
+         If InStr(site_sign, "CMU dumpster enclosure") > 0 Then
+                'do nothing
+               Else
+     
+            If site = "" Then
+                site_sign = "CMU dumpster enclosure "
+            Else
+                site_sign = site_sign & ",CMU dumpster enclosure "
+            End If
+        
+        End If
+       End If
+       
+       If Cells(i, cap_col) = "Wood" Then
+              
+        If InStr(site_sign, "Wood dumpster enclosure") > 0 Then
+                'do nothing
+               Else
+      
+            If site_sign = "" Then
+                site_sign = "Wood dumpster enclosure "
+            Else
+                site_sign = site_sign & ",wood dumpster enclosure "
+            End If
+        
+        End If
+       End If
+       
+       If Cells(i, cap_col) = "Vinyl" Then
+          If InStr(site_sign, "Vinyl dumpster enclosure") > 0 Then
+                'do nothing
+               Else
+    
+            If site_sign = "" Then
+                site_sign = "Vinyl dumpster enclosure "
+            Else
+                site_sign = site_sign & ",Vinyl dumpster enclosure "
+            End If
+        
+        End If
+       End If
+       
+    End If 'dummpster block ends here
+    
+    If Cells(i, comp_col) Like "Play Structure*" Then
+      
+      site_cond(site_index) = Cells(i, cond_col)
+      ReDim Preserve site_cond(site_index + 1)
+      site_index = site_index + 1
+            
+          If InStr(site_play, "Play struture") > 0 Then
+                'do nothing
+            Else
+  
+            If site_play = "" Then
+                site_play = "Play struture "
+            Else
+                site_play = site_play & ",Play struture "
+            End If
+     
+     End If
+    End If 'play structure block ends here
+    
+     If Cells(i, comp_col) Like "Play Surfaces & Sports Courts*" Then
+      
+      site_cond(site_index) = Cells(i, cond_col)
+      ReDim Preserve site_cond(site_index + 1)
+      site_index = site_index + 1
+            
+       If InStr(site_play, "Play Surfaces/Sports Courts") > 0 Then
+                'do nothing
+               Else
+     
+        If site_play = "" Then
+            site_play = "Play Surfaces/Sports Courts "
+        Else
+            site_play = site_play & ",play surfaces/sports courts "
+        End If
+       
+     End If
+    End If 'play structure block ends here
+    
+    If Cells(i, comp_col) Like "Bleachers*" Then
+      
+      site_cond(site_index) = Cells(i, cond_col)
+      ReDim Preserve site_cond(site_index + 1)
+      site_index = site_index + 1
+           
+       If InStr(site_play, "Bleachers") > 0 Then
+                'do nothing
+        Else
+    
+        If site_play = "" Then
+            site_play = "Bleachers "
+        Else
+            site_play = site_play & ",bleachers "
+        End If
+       
+     End If
+    End If 'play structure block ends here
+    
+    If Cells(i, comp_col) Like "Site Pole Light*" Then
+      
+      site_cond(site_index) = Cells(i, cond_col)
+      ReDim Preserve site_cond(site_index + 1)
+      site_index = site_index + 1
+       If InStr(site_play, "Site lights") > 0 Then
+                'do nothing
+               Else
+     
+            If site_play = "" Then
+                site_play = "Site lights "
+            Else
+                site_play = site_play & ",site lights "
+            End If
+     
+     End If
+    End If 'site lights block ends here
+    
+    If Cells(i, comp_col) Like "Site Furnishings*" Then
+      
+      site_cond(site_index) = Cells(i, cond_col)
+      ReDim Preserve site_cond(site_index + 1)
+      site_index = site_index + 1
+            
+       If Cells(i, cap_col) Like "Park Bench*" Then
+         If InStr(site_furn, "Park benches") > 0 Then
+                'do nothing
+               Else
+   
+            If site_furn = "" Then
+                site_furn = "Park benches "
+            Else
+                site_furn = site_furn & ",park benches "
+            End If
+       
+        End If
+       End If
+       
+       If Cells(i, cap_col) Like "Bike Rack*" Then
+        If InStr(site_furn, "Bike racks") > 0 Then
+                'do nothing
+               Else
+
+            If site_furn = "" Then
+                site_furn = "Bike racks "
+            Else
+                site_furn = site_furn & ",bike racks "
+            End If
+         
+         End If
+       End If
+       
+       If Cells(i, cap_col) Like "Picnic Table*" Then
+        
+        If InStr(site_furn, "Picnic tables") > 0 Then
+                'do nothing
+               Else
+
+            If site_furn = "" Then
+                site_furn = "Picnic tables "
+            Else
+                site_furn = site_furn & ",picnic tables "
+            End If
+        
+        End If
+       End If
+       
+       If Cells(i, cap_col) Like "Trash receptacle*" Then
+        
+        If InStr(site_furn, "Trash receptacles") > 0 Then
+                'do nothing
+               Else
+
+            If site_furn = "" Then
+                site_furn = "Trash receptacles "
+            Else
+                site_furn = site_furn & ",trash receptacles "
+            End If
+       End If
+     End If
+    End If 'site furnishings block ends here
+    
+    If Cells(i, comp_col) Like "Site Fountains*" Then
+      
+      site_cond(site_index) = Cells(i, cond_col)
+      ReDim Preserve site_cond(site_index + 1)
+      site_index = site_index + 1
+            
+       If InStr(site_furn, "Site fountain") > 0 Then
+                'do nothing
+               Else
+     
+        If site_furn = "" Then
+            site_furn = "Site fountain "
+        Else
+            site_furn = site_furn & ",site fountain "
+        End If
+       
+     End If
+    End If 'site fountains block ends here
+    
+    If Cells(i, comp_col) Like "Irrigation*" Then
+      
+      land_cond(land_index) = Cells(i, cond_col)
+      ReDim Preserve land_cond(land_index + 1)
+      land_index = land_index + 1
+            
+       If InStr(land_irri, "Irrigation") > 0 Then
+                'do nothing
+               Else
+     
+        If land_irri = "" Then
+            land_irri = "Irrigation is present "
+        End If
+       
+     End If
+    End If 'irrigation block ends here
+    
+    
+    If Cells(i, comp_col) Like "Retaining Wall*" Then
+      
+      land_cond(land_index) = Cells(i, cond_col)
+      ReDim Preserve land_cond(land_index + 1)
+      land_index = land_index + 1
+            
+       If InStr(land_ret, "Brick retaining walls") > 0 Then
+                'do nothing
+               Else
+     
+            If Cells(i, cap_col) Like "Brick*" Then
+                 land_ret = "Brick retaining walls "
+            End If
+       
+       End If
+       
+       
+       If InStr(land_ret, "Stone retaining walls") > 0 Then
+                'do nothing
+        Else
+
+            If Cells(i, cap_col) Like "Stone*" Then
+                 land_ret = "Stone retaining walls "
+            End If
+       
+       End If
+       
+       If InStr(land_ret, "Cast") > 0 Then
+                'do nothing
+               Else
+
+            If Cells(i, cap_col) Like "Cast*" Then
+                 land_ret = "Cast-in-place retaining walls "
+            End If
+       End If
+       
+       If InStr(land_ret, "Concrete") > 0 Then
+                'do nothing
+               Else
+
+            If Cells(i, cap_col) Like "Concrete*" Then
+                 land_ret = "CMU retaining walls "
+            End If
+       End If
+       
+       If InStr(land_ret, "Timber retaining") > 0 Then
+                'do nothing
+               Else
+
+            If Cells(i, cap_col) Like "Treated Timber*" Then
+                 land_ret = "Timber retaining walls "
+            End If
+       
+      End If
+      
+     
+    End If 'retaining walls block ends here
+    
+    If Cells(i, comp_col) Like "Septic Tank*" Then
+      
+      util_cond(util_index) = Cells(i, cond_col)
+      ReDim Preserve util_cond(site_index + 1)
+      util_index = util_index + 1
+            
+        If InStr(util_water, "septic") > 0 Then
+                'do nothing
+               Else
+            
+                util_water = "On-site wells and septic tanks "
+      
+        End If
+    
+      
+    End If 'utilities water and sewer block ends here
+            
+   
+   If Cells(i, comp_col) Like "Pole Light*" Then
+      lght_cond(lght_index) = Cells(i, cond_col)
+      ReDim Preserve lght_cond(site_index + 1)
+      lght_index = lght_index + 1
+      
+       If Cells(i, cap_col) Like "LED*" Then
+           If InStr(lgt_pole, "LED") > 0 Then
+                'do nothing
+               Else
+                    If lgt_pole = "" Then
+                        lgt_pole = "LED"
+                    Else
+                        lgt_pole = lgt_pole & ", LED"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "HPS*" Then
+           If InStr(lgt_pole, "HPS") > 0 Then
+                'do nothing
+               Else
+                    If lgt_pole = "" Then
+                        lgt_pole = "HPS"
+                    Else
+                        lgt_pole = lgt_pole & ", HPS"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "CFL*" Then
+           If InStr(lgt_pole, "CFL") > 0 Then
+                'do nothing
+               Else
+                    If lgt_pole = "" Then
+                        lgt_pole = "CFL"
+                    Else
+                        lgt_pole = lgt_pole & ", CFL"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "Halogen*" Then
+           If InStr(lgt_pole, "Halogen") > 0 Then
+                'do nothing
+               Else
+                    If lgt_pole = "" Then
+                        lgt_pole = "Halogen"
+                    Else
+                        lgt_pole = lgt_pole & ", Halogen"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "Incandescent*" Then
+           If InStr(lgt_pole, "Incandescent") > 0 Then
+                'do nothing
+               Else
+                    If lgt_pole = "" Then
+                        lgt_pole = "Incandescent"
+                    Else
+                        lgt_pole = lgt_pole & ", Incandescent"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "T-8*" Then
+           If InStr(lgt_pole, "T-8") > 0 Then
+                'do nothing
+               Else
+                    If lgt_pole = "" Then
+                        lgt_pole = "T-8"
+                    Else
+                        lgt_pole = lgt_pole & ", T-8"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "T-12*" Then
+           If InStr(lgt_pole, "T-12") > 0 Then
+                'do nothing
+               Else
+                    If lgt_pole = "" Then
+                        lgt_pole = "T-12"
+                    Else
+                        lgt_pole = lgt_pole & ", T-12"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "Metal Halide*" Then
+           If InStr(lgt_pole, "Metal Halide") > 0 Then
+                'do nothing
+               Else
+                    If lgt_pole = "" Then
+                        lgt_pole = "Metal Halide"
+                    Else
+                        lgt_pole = lgt_pole & ", Metal Halide"
+                    End If
+               End If
+       End If
+       
+    End If ' pole light block ends here
+    
+     If Cells(i, comp_col) Like "Building mounted lighting*" Then
+        lght_cond(lght_index) = Cells(i, cond_col)
+      ReDim Preserve lght_cond(site_index + 1)
+      lght_index = lght_index + 1
+      
+       If Cells(i, cap_col) Like "LED*" Then
+           If InStr(lgt_bmount, "LED") > 0 Then
+                'do nothing
+               Else
+                    If lgt_bmount = "" Then
+                        lgt_bmount = "LED"
+                    Else
+                        lgt_bmount = lgt_bmount & ", LED"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "HPS*" Then
+           If InStr(lgt_bmount, "HPS") > 0 Then
+                'do nothing
+               Else
+                    If lgt_bmount = "" Then
+                        lgt_bmount = "HPS"
+                    Else
+                        lgt_bmount = lgt_bmount & ", HPS"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "CFL*" Then
+           If InStr(lgt_bmount, "CFL") > 0 Then
+                'do nothing
+               Else
+                    If lgt_bmount = "" Then
+                        lgt_bmount = "CFL"
+                    Else
+                        lgt_bmount = lgt_bmount & ", CFL"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "Halogen*" Then
+           If InStr(lgt_bmount, "Halogen") > 0 Then
+                'do nothing
+               Else
+                    If lgt_bmount = "" Then
+                        lgt_bmount = "Halogen"
+                    Else
+                        lgt_bmount = lgt_bmount & ", Halogen"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "Incandescent*" Then
+           If InStr(lgt_bmount, "Incandescent") > 0 Then
+                'do nothing
+               Else
+                    If lgt_bmount = "" Then
+                        lgt_bmount = "Incandescent"
+                    Else
+                        lgt_bmount = lgt_bmount & ", Incandescent"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "T-8*" Then
+           If InStr(lgt_bmount, "T-8") > 0 Then
+                'do nothing
+               Else
+                    If lgt_bmount = "" Then
+                        lgt_bmount = "T-8"
+                    Else
+                        lgt_bmount = lgt_bmount & ", T-8"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "T-12*" Then
+           If InStr(lgt_bmount, "T-12") > 0 Then
+                'do nothing
+               Else
+                    If lgt_bmount = "" Then
+                        lgt_bmount = "T-12"
+                    Else
+                        lgt_bmount = lgt_bmount & ", T-12"
+                    End If
+               End If
+       End If
+       
+       If Cells(i, cap_col) Like "Metal Halide*" Then
+           If InStr(lgt_bmount, "Metal Halide") > 0 Then
+                'do nothing
+               Else
+                    If lgt_bmount = "" Then
+                        lgt_bmount = "Metal Halide"
+                    Else
+                        lgt_bmount = lgt_bmount & ", Metal Halide"
+                    End If
+               End If
+       End If
+       
+    End If ' building mounted light block ends here
+    
+   End If 'UF G ends here
+   
+   If Cells(i, comp_col) = "ADA" Then
+      
+      If InStr(ADA, "Potential moderate/major") > 0 Then
+                'do nothing
+               Else
+
+       If Cells(i, cap_col) = "Miscellaneous" Then
+            ADA = "Potential moderate/major issues have been identified at this property and a detailed accessibility study is recommended"
+       End If
+     End If
+    End If 'ada block ends here
+   
+   If InStr(findings, Cells(i, comm_col)) > 0 Then
+      'Do nothing
+   Else
+      findings = findings & Cells(i, comm_col) & ","
+   End If
+   
+   
+   
+  Next i
+      
+      
+  'Text control sets start her (SET01)
+  
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg_fac" & l_C).Item(1).Range.text = extWall
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg_win" & l_C).Item(1).Range.text = extWind
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("int_walls" & l_C).Item(1).Range.text = intWall
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("int_floors" & l_C).Item(1).Range.text = intFloor
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("int_ceilings" & l_C).Item(1).Range.text = intCeil
+    
+    If elev = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("elev" & l_C).Item(1).Range.text = "N/A"
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("elev_car" & l_C).Item(1).Range.text = ""
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("elev" & l_C).Item(1).Range.text = elev
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("elev_car" & l_C).Item(1).Range.text = elev_car & " cars serving all " & elev_floor & " floors"
+    End If
+    
+    If lift = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("lift" & l_C).Item(1).Range.text = ""
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("lift" & l_C).Item(1).Range.text = lift
+    End If
+    
+    If plumb = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("Plumb" & l_C).Item(1).Range.text = ""
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("Plumb" & l_C).Item(1).Range.text = plumb
+    End If
+    
+    
+    If hvac_ctr = "" And hvac_term = "" And hvac_indi = "" And hvac_supp = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_ctr" & l_C).Item(1).Range.text = "N/A"
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_term" & l_C).Item(1).Range.text = ""
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_indi" & l_C).Item(1).Range.text = ""
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_supp" & l_C).Item(1).Range.text = hvac_supp
+    
+    Else
+    
+            If hvac_ctr = "" Then
+            obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_ctr" & l_C).Item(1).Range.text = ""
+            Else
+            obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_ctr" & l_C).Item(1).Range.text = hvac_ctr
+            End If
+            
+            If hvac_term = "" Then
+            obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_term" & l_C).Item(1).Range.text = ""
+            Else
+            havc_term = hvac_term & " units"
+            obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_term" & l_C).Item(1).Range.text = hvac_term
+            End If
+            
+            If hvac_indi = "" Then
+            obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_indi" & l_C).Item(1).Range.text = ""
+            Else
+            hvac_indi = hvac_indi & " units"
+            obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_indi" & l_C).Item(1).Range.text = hvac_indi
+            End If
+            
+            If hvac_supp = "" Then
+            obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_supp" & l_C).Item(1).Range.text = ""
+            Else
+            hvac_supp = "Supplemental componenets:" & hvac_supp & " units"
+            obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_supp" & l_C).Item(1).Range.text = hvac_supp
+            End If
+            
+    End If
+    
+    
+    elec_sour = elec_sour & "with copper wiring"
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("elec_sour" & l_C).Item(1).Range.text = elec_sour
+    
+    If elec_emer = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("elec_emer" & l_C).Item(1).Range.text = "N/A"
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("elec_emer" & l_C).Item(1).Range.text = elec_emer
+    End If
+    
+    If equip = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("equip" & l_C).Item(1).Range.text = "None"
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("equip" & l_C).Item(1).Range.text = equip
+    End If
+    
+    If fire = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("fire" & l_C).Item(1).Range.text = "None"
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("fire" & l_C).Item(1).Range.text = fire
+    End If
+    
+    If alarm = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("alarm" & l_C).Item(1).Range.text = "None"
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("alarm" & l_C).Item(1).Range.text = alarm
+    End If
+    
+    If pav = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pav" & l_C).Item(1).Range.text = "N/A"
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pav" & l_C).Item(1).Range.text = pav
+    End If
+    
+    If site_sign = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("site_sign" & l_C).Item(1).Range.text = ""
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("site_sign" & l_C).Item(1).Range.text = site_sign
+    End If
+    
+    If site_furn = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("site_furn" & l_C).Item(1).Range.text = ""
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("site_furn" & l_C).Item(1).Range.text = site_furn
+    End If
+    
+    If site_play = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("site_play" & l_C).Item(1).Range.text = ""
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("site_play" & l_C).Item(1).Range.text = site_play
+    End If
+    
+    If land_irri = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("land_irri" & l_C).Item(1).Range.text = "Irrigation is not present"
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("land_irri" & l_C).Item(1).Range.text = land_irri
+    End If
+    
+    If land_ret = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("land_ret" & l_C).Item(1).Range.text = ""
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("land_ret" & l_C).Item(1).Range.text = land_ret
+    End If
+    
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("land_slope" & l_C).Item(1).Range.text = "Low to moderate site slopes throughout "
+    
+    
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("util_water" & l_C).Item(1).Range.text = util_water
+    'add natural gas condition based on instances before
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("util_elec" & l_C).Item(1).Range.text = "Local utility-provided electric " & util_elec
+    
+    
+    If anc = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("anc" & l_C).Item(1).Range.text = "None"
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("anc" & l_C).Item(1).Range.text = anc
+    End If
+    
+    If lgt_pole = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("lgt_pole" & l_C).Item(1).Range.text = ""
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("lgt_pole" & l_C).Item(1).Range.text = lgt_pole
+    End If
+    
+    If lgt_bmount = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("lgt_bldg" & l_C).Item(1).Range.text = ""
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("lgt_bldg" & l_C).Item(1).Range.text = lgt_bmount
+    End If
+    
+    If ADA = "" Then
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("ada" & l_C).Item(1).Range.text = "Presently it does not appear an accessibility study is needed for this property."
+    Else
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("ada" & l_C).Item(1).Range.text = ADA
+    End If
+      
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("key_find" & l_C).Item(1).Range.text = findings
+    
+    'MsgBox "average fac cond is " & average_cond(fac_cond)
+    'MsgBox "average roof cond is " & average_cond(roof_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("fac_cond" & l_C).Item(1).Range.text = average_cond(fac_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("roof_cond" & l_C).Item(1).Range.text = average_cond(roof_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("int_cond" & l_C).Item(1).Range.text = average_cond(intr_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("elev_cond" & l_C).Item(1).Range.text = average_cond(elev_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("plumb_cond" & l_C).Item(1).Range.text = average_cond(plum_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("hvac_cond" & l_C).Item(1).Range.text = average_cond(hvac_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("fire_cond" & l_C).Item(1).Range.text = average_cond(fire_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("elec_cond" & l_C).Item(1).Range.text = average_cond(elec_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("alarm_cond" & l_C).Item(1).Range.text = average_cond(alrm_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("equip_cond" & l_C).Item(1).Range.text = average_cond(eqip_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("pav_cond" & l_C).Item(1).Range.text = average_cond(pav_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("site_cond" & l_C).Item(1).Range.text = average_cond(site_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("land_cond" & l_C).Item(1).Range.text = average_cond(land_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("util_cond" & l_C).Item(1).Range.text = average_cond(util_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("lgt_cond" & l_C).Item(1).Range.text = average_cond(lght_cond)
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("anc_cond" & l_C).Item(1).Range.text = average_cond(anc_cond)
+            
+Next l_C
+              
+    'Delete unused sections
+    Set rngStart = obj_portfolio_master.ActiveDocument.Bookmarks("bldgend" & lcounter).Range
+    Set rngEnd = obj_portfolio_master.ActiveDocument.Bookmarks("bldgend20").Range
+
+    obj_portfolio_master.ActiveDocument.Range(rngStart.Start, rngEnd.End).Delete
+    'obj_portfolio_master.ActiveDocument.Selection.Delete
+ 
+
+    
+    
+    
+    Dim addrs As String
+    addrs = ""
+    
+    Dim date_blts As String
+    date_blts = ""
+    
+    'Dim tab_lrow As Long
+    
+    'tab_lrow = L_row
+     'MsgBox Join(locations, vbCrLf)
+     'MsgBox Join(year_blt, vbCrLf)
+    
+    For k = 1 To loc_no
+        addrs = addrs + locations(k) & " : " & addr(k) & vbCrLf
+        date_blts = date_blts + locations(k) & " : " & year_blt(k) & vbCrLf
+    Next k
+    
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("addr").Item(1).Range.text = addrs
+    obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("date_blts").Item(1).Range.text = date_blts
+    'MsgBox addr
+    'MsgBox date_blts
+    
+    'loops only for 10 buildings
+    For u = 1 To lcounter
+
+              obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg_st_add" & u).Item(1).Range.text = addr(u)
+             ' obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg_city" & u).Item(1).Range.text = Cells(n, 8)
+             ' obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg_st" & u).Item(1).Range.text = Cells(n, 9)
+              obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg_cons" & u).Item(1).Range.text = year_blt(u)
+              obj_portfolio_master.ActiveDocument.SelectContentControlsByTitle("bldg_sf" & u).Item(1).Range.text = loc_sf(u)
+             
+
+    Next u
+    
+End Function
+
+
+Public Function L_row() As Long
+   
+   L_row = Rows(Rows.Count).End(xlUp).Row
+    
+End Function
+Public Function Fi_row() As Long
+
+    With ActiveSheet.AutoFilter.Range
+        Range("A" & .Offset(1, 0).SpecialCells(xlCellTypeVisible)(1).Row).Select
+        Fi_row = ActiveCell.Row
+    End With
+    
+End Function
+
+
+
+Public Function average_cond(cond_arr() As String) As String
+    Dim avg As Integer
+    Dim sum As Integer
+    Dim size As Integer
+    Dim cScore As Integer
+    
+    sum = 0
+       
+    size = UBound(cond_arr) - LBound(cond_arr) + 1
+     'MsgBox Size
+     'MsgBox "the lbound is " & LBound(cond_arr)
+     'MsgBox "the array size is " & Size
+     'MsgBox "the first element in the array is" & cond_arr(0)
+       
+    For i = LBound(cond_arr) To size - 1
+            If cond_arr(i) = "Excellent" Then
+                cScore = 1
+            ElseIf cond_arr(i) = "Good" Then
+                cScore = 2
+            ElseIf cond_arr(i) = "Fair" Then
+                cScore = 3
+            ElseIf cond_arr(i) = "Poor" Then
+                cScore = 4
+            ElseIf cond_arr(i) = "Failed" Then
+                cScore = 5
+            ElseIf cond_arr(i) = "NA" Then
+                cScore = 0
+            End If
+        
+        sum = cScore + sum
+        'MsgBox "the current sum iter is " & Sum
+    Next i
+    
+   
+    If sum > 0 Then
+    
+        avg = WorksheetFunction.RoundUp(sum / size, 0)
+    Else
+        avg = 0
+    End If
+    
+    'MsgBox "the avg is " & avg
+    
+    If avg = 1 Then
+        average_cond = "Excellent"
+    ElseIf avg = 2 Then
+        average_cond = "Good"
+    ElseIf avg = 3 Then
+        average_cond = "Fair"
+    ElseIf avg = 4 Then
+        average_cond = "Poor"
+    ElseIf avg = 5 Then
+        average_cond = "Failed"
+    ElseIf avg = 0 Then
+        average_cond = "--"
+    End If
+    
+    
+End Function
+
+Public Function URLEncode( _
+   StringVal As String, _
+   Optional SpaceAsPlus As Boolean = False _
+) As String
+
+  Dim StringLen As Long: StringLen = Len(StringVal)
+
+  If StringLen > 0 Then
+    ReDim Result(StringLen) As String
+    Dim i As Long, CharCode As Integer
+    Dim Char As String, Space As String
+
+    If SpaceAsPlus Then Space = "+" Else Space = "%20"
+
+    For i = 1 To StringLen
+      Char = Mid$(StringVal, i, 1)
+      CharCode = Asc(Char)
+      Select Case CharCode
+        Case 97 To 122, 65 To 90, 48 To 57, 45, 46, 95, 126
+          Result(i) = Char
+        Case 32
+          Result(i) = Space
+        Case 0 To 15
+          Result(i) = "%0" & Hex(CharCode)
+        Case Else
+          Result(i) = "%" & Hex(CharCode)
+      End Select
+    Next i
+    URLEncode = Join(Result, "")
+  End If
+End Function
+
+
+
+
+
+
